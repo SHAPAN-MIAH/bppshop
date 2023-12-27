@@ -1,6 +1,6 @@
 import React from "react";
 import "./Footer.css";
-import logo from "../../../Assets/Images/bpp shop logo fainal.png";
+import logo from "../../../Assets/Images/Orenge logo.png";
 import playstoreIcon from "../../../Assets/Images/images-1.webp";
 import appleIcon from "../../../Assets/Images/Apple-logo-1A9B9F20EA-seeklogo.com.png";
 import { Link } from "react-router-dom";
