@@ -7,7 +7,7 @@ import MetaData from "./../../Layout/MetaData";
 const Category = ({ allCategory, loading }) => {
   return (
     <>
-      <MetaData title="Bppshop Categories" />
+      <MetaData title="Bppshop" />
       <div className="categoryView-section">
         <div className="categoryView-container">
           <div className="category_content">
