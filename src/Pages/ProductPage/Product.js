@@ -229,6 +229,7 @@ const Product = () => {
           </li>
         </ol>
       </nav>
+      <h1>{subSubSlug}</h1>
       <div className="categoryView-container productView-container">
         <InfiniteScroll
           dataLength={products?.length}
