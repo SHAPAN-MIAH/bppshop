@@ -1,4 +1,8 @@
-
+.productView-section h1{
+ font-size: 20px;
+ margin-bottom: 15px;
+ text-transform: uppercase;
+}
 .product-content {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

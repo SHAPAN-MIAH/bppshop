@@ -76,13 +76,14 @@ const ProductReview = ({ productDetail }) => {
               <div className="customer-reviews">
                 <h2>Customers Ratings</h2>
                 <div className="averageRating-container">
-                  <h1>{productDetail?.average_review}</h1>
-                  <div>
-                    <h2>Average Ratings</h2>
+                  <h3>{productDetail?.average_review}</h3>
+                  <div className="Average_ratings_content">
+                    <h4>Average Ratings</h4>
                     <RatingStar
                       id={productDetail?.id}
+                  
                       rating={productDetail?.average_review}
-                      size={17}
+                      size={15}
                     />
                     {/* <p className="rating-star">
                       {(() => {

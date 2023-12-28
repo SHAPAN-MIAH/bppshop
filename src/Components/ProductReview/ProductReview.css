@@ -30,6 +30,20 @@
   justify-content: space-between;
   /* padding: 0px 0px 0px 0px; */
 }
+
+.averageRating-container h3{
+  font-size: 50px;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+.Average_ratings_content{
+  margin-left: 15px;
+  margin-top: 5px;
+}
+.Average_ratings_content h4{
+  margin-bottom: 0px;
+  font-size: 20px;
+}
 .rating-star {
   color: #ef8341;
 }
@@ -136,6 +150,7 @@
 .star-progress {
   display: flex;
   width: 100%;
+  margin-bottom: -5px;
 }
 
 .star-progress p {
@@ -144,7 +159,7 @@
 
 .progressbar {
   width: 400px;
-  height: 17px;
+  height: 20px;
   background-color: #e0e0e0;
   border-radius: 30px;
   overflow: hidden;
@@ -154,7 +169,7 @@
   color: #ccd;
   width: 0;
   border-radius: 30px;
-  height: 17px;
+  height: 20px;
 }
 
 .value {
