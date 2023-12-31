@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 import defaultProImg from "../../Assets/Images/defaultImg.jpg";
 import ModalVideo from "react-modal-video";
 import "react-modal-video/scss/modal-video.scss";
+import TagManager from "react-gtm-module";
 
 // import { IoCloseOutline } from "react-icons/io5";
 import { AiOutlineYoutube, AiFillPlayCircle } from "react-icons/ai";
@@ -54,7 +55,7 @@ const ProductDetailsPage = () => {
   const { slug, subSlug, subSubSlug, id } = useParams();
   const [productDetail, setProductDetail] = useState([]);
   const [quantityCount, setQuantityCount] = useState(1);
-  
+
   // const [loading, setLoading] = useState(true);
   const [variantRes, setVariantRes] = useState({});
   const navigate = useNavigate();
@@ -71,12 +72,10 @@ const ProductDetailsPage = () => {
 
   // Product Details............................
   useEffect(() => {
-    axios.get(`${baseUrl}/products/details/${id}`)
-    .then((res) => {
+    axios.get(`${baseUrl}/products/details/${id}`).then((res) => {
       setProductDetail(res?.data?.data);
     });
   }, [id]);
-
 
   // Customer Audit log.........................
   // const auditLog = {
@@ -255,7 +254,6 @@ const ProductDetailsPage = () => {
   //   }
   // }, [productDetailsPath, navigate]);
 
-
   // cart item increase decrease function..............................
   const increaseQuantityBeforeAddToCart = (quantity, stock, maxOrderQty) => {
     if (stock <= quantity) {
@@ -269,7 +267,7 @@ const ProductDetailsPage = () => {
           color: "#fff",
         },
       });
-      return ;
+      return;
     }
     if (maxOrderQty > 1 && maxOrderQty <= quantity) {
       toast.error("Sorry! Stock is limited!", {
@@ -282,7 +280,7 @@ const ProductDetailsPage = () => {
           color: "#fff",
         },
       });
-      return ;
+      return;
     }
   };
 
@@ -312,7 +310,7 @@ const ProductDetailsPage = () => {
           color: "#fff",
         },
       });
-      return ;
+      return;
     }
     // dispatch(addItemsToCart(id, newQty, defaultChoices));
     dispatch(updateItemsToCart(id, newQty));
@@ -492,39 +490,51 @@ const ProductDetailsPage = () => {
     setQuantityCount(1);
     setVariantRes("");
     setSelectedOption("");
-    setImg("")
-
+    setImg("");
   };
 
 
-  // const gtagHandler = () => {
-  //   gtag("event", "view_item", {
-  //     currency: "USD",
-  //     value: 7.77,
-  //     items: [
-  //       {
-  //         item_id: "SKU_12345",
-  //         item_name: "Stan and Friends Tee",
-  //         affiliation: "Google Merchandise Store",
-  //         coupon: "SUMMER_FUN",
-  //         discount: 2.22,
-  //         index: 0,
-  //         item_brand: "Google",
-  //         item_category: "Apparel",
-  //         item_category2: "Adult",
-  //         item_category3: "Shirts",
-  //         item_category4: "Crew",
-  //         item_category5: "Short sleeve",
-  //         item_list_id: "related_products",
-  //         item_list_name: "Related Products",
-  //         item_variant: "green",
-  //         location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
-  //         price: 9.99,
-  //         quantity: 1
-  //       }
-  //     ]
-  //   });
-  // }
+
+
+  const [relatedProduct, setRelatedProduct] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${baseUrl}/products/related-products/${productDetail?.id}`)
+      .then((res) => setRelatedProduct(res.data.data));
+  }, [productDetail?.id]);
+
+
+  const tagManagerArgs = {
+    dataLayer: {
+      currency: "BDT",
+      value:`${productDetail?.unit_price}`,
+      items: [
+        {
+          item_id: `${productDetail?.id}`,
+          item_name: `${productDetail?.name}`,
+          discount: `${productDetail?.discount}`,
+          item_brand: `${productDetail?.brand?.name}`,
+          item_category: `${slug}`,
+          item_category2: `${subSlug}`,
+          item_category3: `${subSubSlug}`,
+          // item_list_id: "related_products",
+          // item_list_name: "Related Products",
+          price: `${productDetail?.unit_price}`,
+          quantity: 1,
+        },
+      ],
+    },
+    // dataLayerName: "PageDataLayer",
+  };
+
+  useEffect(() => {
+    TagManager.dataLayer(tagManagerArgs);
+  }, [])
+  
+
+
+
 
   return (
     <>
@@ -783,12 +793,15 @@ const ProductDetailsPage = () => {
                       <span
                         onClick={() => {
                           setQuantityCount(
-                            productDetail?.max_order_qty ? (productDetail?.max_order_qty >= quantityCount + 1
+                            productDetail?.max_order_qty
+                              ? productDetail?.max_order_qty >=
+                                quantityCount + 1
+                                ? quantityCount + 1
+                                : quantityCount
+                              : productDetail?.current_stock >=
+                                quantityCount + 1
                               ? quantityCount + 1
-                              : quantityCount ) :
-                              ( productDetail?.current_stock >= quantityCount + 1
-                              ? quantityCount + 1
-                              : quantityCount)
+                              : quantityCount
                           );
                           priceVariantHandlerByChoiceOption(
                             productDetail?.current_stock >= quantityCount + 1
@@ -950,9 +963,15 @@ const ProductDetailsPage = () => {
         
       </div> */}
 
-      <ProductReview productDetail={productDetail} key={productDetail?.name}/>
+      <ProductReview productDetail={productDetail} key={productDetail?.name} />
 
-      {productDetail?.id && <RelatedProduct productId={productDetail?.id} key={productDetail?.id} setImg={setImg} />}
+      {productDetail?.id && (
+        <RelatedProduct
+          productId={productDetail?.id}
+          key={productDetail?.id}
+          setImg={setImg}
+        />
+      )}
 
       <Modal
         isOpen={modalIsOpen}

@@ -39,6 +39,7 @@ const CheckoutPayment = () => {
     const agent_checkout = {
       address_id: id,
       agent_id: agentId,
+      X_Client_Type: `web` 
     };
 
     if (agentId) {
@@ -61,7 +62,7 @@ const CheckoutPayment = () => {
         });
     } else {
       axios
-        .post(`${baseUrl}/cart/checkout`, { address_id: id }, config)
+        .post(`${baseUrl}/cart/checkout`, { address_id: id, X_Client_Type: `web` }, config)
         .then((res) => {
           if (res.data.status == "success") {
             dispatch(ClearCart());
