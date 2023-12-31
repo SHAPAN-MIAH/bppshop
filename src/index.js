@@ -9,7 +9,7 @@ import store from "./Redux/Store";
 import TagManager from 'react-gtm-module';
 
 const tagManagerArgs = {
-  gtmId: 'GTM-5D7VZ67M'
+  gtmId: 'GTM-N7G67VZG'
 };
 
 TagManager.initialize(tagManagerArgs);
