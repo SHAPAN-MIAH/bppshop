@@ -528,7 +528,7 @@ const ProductDetailsPage = () => {
     dataLayerName: "ProductDetailsPageDataLayer",
   };
 
-  console.log(tagManagerArgs);
+  // console.log(tagManagerArgs);
 
   useEffect(() => {
     productDetail?.id && TagManager.dataLayer(tagManagerArgs);
