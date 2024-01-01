@@ -54,3 +54,12 @@ export const getProductDetails = (pid) => async(dispatch, getState) => {
 export const clearProductErrors = () => async (dispatch) => {
   dispatch({type: CLEAR_PRODUCT_ERROR});
 }
+
+
+export const relatedProducts = (relatedProducts) => async (dispatch) => {
+  dispatch({
+    type : "GET_RELATED_PRODUCT_SUCCESS",
+    payload: relatedProducts
+
+  })
+}

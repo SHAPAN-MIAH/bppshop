@@ -11,7 +11,7 @@ const ProductReview = ({ productDetail }) => {
       <div className="review-section">
         <div className="container-fluid reviewSection">
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-7">
               <div className="customer-qa">
                 {/* <h2>Customers Q & A</h2> */}
                 <h2>Customer Reviews</h2>
@@ -72,7 +72,7 @@ const ProductReview = ({ productDetail }) => {
                 )}
               </div>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-5">
               <div className="customer-reviews">
                 <h2>Customers Ratings</h2>
                 <div className="averageRating-container">

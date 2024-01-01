@@ -13,9 +13,12 @@ import BestSellingProductCard from "../../Pages/BestSelling/BestSellingProductCa
 import NewArrivalProductCard from "../../Pages/NewArrival/NewArrivalProductCard";
 import TopRatedProductCard from "../../Pages/TopRated/TopRatedProductCard";
 import SearchProductCard from "../../Pages/Search/SearchProductCard";
+import { useDispatch } from "react-redux";
+import { relatedProducts } from "../../Redux/Actions/ProductsAction";
 
 const RelatedProduct = ({ productId , setImg }) => {
 
+  const dispatch = useDispatch()
   let location = useLocation();
   const splitLocation = location?.pathname.split("/");
   const filterSplitLocation = splitLocation[1];
@@ -45,7 +48,11 @@ const RelatedProduct = ({ productId , setImg }) => {
   useEffect(() => {
     axios
       .get(`${baseUrl}/products/related-products/${productId}`)
-      .then((res) => setRelatedProduct(res.data.data));
+      .then((res) => {
+        setRelatedProduct(res.data.data)
+        dispatch(relatedProducts(res.data.data))
+      });
+        
   }, [productId]);
 
   

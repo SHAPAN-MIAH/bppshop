@@ -22,6 +22,7 @@ import AddToCartResponseReducer from "./Reducers/AddToCartResponseReducers";
 import ItemQtyUpdateResReducer from "./Reducers/ItemQtyUpdateResReducer";
 import RemoveItemResReducer from "./Reducers/RemoveItemResReducer";
 import { loadAllShippingAddressReducers } from "./Reducers/LoadAllShippingAddressReducers";
+import RelatedProductsReducers from "./Reducers/RelatedProductsReducers";
 
 
 const rootReducer = combineReducers({
@@ -46,7 +47,8 @@ const rootReducer = combineReducers({
   adminInfo: AdminInfoReducer,
   signupRedirect: SignupRedirectReducer,
   ItemQtyUpdateRes: ItemQtyUpdateResReducer,
-  RemoveItemRes: RemoveItemResReducer
+  RemoveItemRes: RemoveItemResReducer,
+  RelatedProducts: RelatedProductsReducers
 });
 
 let initialState = {

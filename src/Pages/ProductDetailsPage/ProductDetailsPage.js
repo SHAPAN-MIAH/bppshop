@@ -494,15 +494,8 @@ const ProductDetailsPage = () => {
   };
 
 
-
-
-  const [relatedProduct, setRelatedProduct] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`${baseUrl}/products/related-products/${productDetail?.id}`)
-      .then((res) => setRelatedProduct(res.data.data));
-  }, [productDetail?.id]);
+  const { RelatedProducts } = useSelector((state) => state?.RelatedProducts);
+  // console.log(RelatedProducts);
 
 
   const tagManagerArgs = {
@@ -518,8 +511,8 @@ const ProductDetailsPage = () => {
           item_category: `${slug}`,
           item_category2: `${subSlug}`,
           item_category3: `${subSubSlug}`,
-          item_list_id: `${relatedProduct.map(i => i.id)}`,
-          item_list_name: `${relatedProduct.map(i => i.name)}`,
+          item_list_id: `${RelatedProducts.map(i => i.id)}`,
+          item_list_name: `${RelatedProducts.map(i => i.name)}`,
           price: `${productDetail?.unit_price}`,
           quantity: 1,
         },
@@ -532,7 +525,7 @@ const ProductDetailsPage = () => {
 
   useEffect(() => {
     productDetail?.id && TagManager.dataLayer(tagManagerArgs);
-  }, [productDetail?.id])
+  }, [])
   
 
 
