@@ -518,19 +518,21 @@ const ProductDetailsPage = () => {
           item_category: `${slug}`,
           item_category2: `${subSlug}`,
           item_category3: `${subSubSlug}`,
-          // item_list_id: "related_products",
-          // item_list_name: "Related Products",
+          item_list_id: `${relatedProduct.map(i => i.id)}`,
+          item_list_name: `${relatedProduct.map(i => i.name)}`,
           price: `${productDetail?.unit_price}`,
           quantity: 1,
         },
       ],
     },
-    // dataLayerName: "PageDataLayer",
+    dataLayerName: "ProductDetailsPageDataLayer",
   };
 
+  console.log(tagManagerArgs);
+
   useEffect(() => {
-    TagManager.dataLayer(tagManagerArgs);
-  }, [])
+    productDetail?.id && TagManager.dataLayer(tagManagerArgs);
+  }, [productDetail?.id])
   
 
 
