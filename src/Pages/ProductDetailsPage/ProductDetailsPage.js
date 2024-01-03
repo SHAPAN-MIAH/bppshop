@@ -533,7 +533,7 @@ const ProductDetailsPage = () => {
         },
       ],
     },
-    dataLayerName: "ProductDetailsPageDataLayer",
+    // dataLayerName: "ProductDetailsPageDataLayer",
   };
 
   // console.log(tagManagerArgs);
