@@ -72,11 +72,40 @@ const ProductDetailsPage = () => {
   const { signupRes } = useSelector((state) => state.signupRes);
   const { RelatedProducts } = useSelector((state) => state?.RelatedProducts);
 
-
   // Product Details............................
   useEffect(() => {
     axios.get(`${baseUrl}/products/details/${id}`).then((res) => {
       setProductDetail(res?.data?.data);
+
+      if (res.status == "success") {
+        // Google tag manager data layer............................................
+        const tagManagerArgs = {
+          gtmId: "GTM-N7G67VZG",
+          dataLayer: {
+            userId: `${user?.id}`,
+            currency: "BDT",
+            value: `${productDetail?.unit_price}`,
+            items: [
+              {
+                item_id: `${productDetail?.id}`,
+                item_name: `${productDetail?.name}`,
+                discount: `${productDetail?.discount}`,
+                item_brand: `${productDetail?.brand?.name}`,
+                item_category: `${slug}`,
+                item_category2: `${subSlug}`,
+                item_category3: `${subSubSlug}`,
+                item_list_id: `${RelatedProducts?.map((i) => i.id)}`,
+                item_list_name: `${RelatedProducts?.map((i) => i.name)}`,
+                price: `${productDetail?.unit_price}`,
+                quantity: 1,
+              },
+            ],
+          },
+          // dataLayerName: "ProductDetailsPageDataLayer",
+        };
+
+        TagManager.dataLayer(tagManagerArgs);
+      }
     });
   }, [id]);
 
@@ -337,15 +366,8 @@ const ProductDetailsPage = () => {
     setIsOpen(false);
   }
 
-
   // console.log(user);
 
-  
-
-
-
-
-  
   const modalLogin = localStorage.getItem("modalLogin");
   const modalSignup = localStorage.getItem("modalSignup");
   const cartItemBeforeLogin = useSelector(
@@ -393,7 +415,7 @@ const ProductDetailsPage = () => {
         ? dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithColor))
         : dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithoutColor));
       addToCartOverlyLoading();
-      productDetail?.id && TagManager.dataLayer(tagManagerArgs);
+      // productDetail?.id && TagManager.dataLayer(tagManagerArgs);
     }
   };
 
@@ -436,7 +458,7 @@ const ProductDetailsPage = () => {
           : dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithoutColor));
 
         addToCartOverlyLoading();
-        productDetail?.id && TagManager.dataLayer(tagManagerArgs);
+        // productDetail?.id && TagManager.dataLayer(tagManagerArgs);
       }
 
       dispatch(ClearAddToCartRes());
@@ -506,44 +528,36 @@ const ProductDetailsPage = () => {
     setSelectedOption("");
     setImg("");
   };
-  
 
+  // // Google tag manager data layer............................................
+  // const tagManagerArgs = {
+  //   gtmId: 'GTM-N7G67VZG',
+  //   dataLayer: {
+  //     userId: `${user?.id}`,
+  //     currency: "BDT",
+  //     value:`${productDetail?.unit_price}`,
+  //     items: [
+  //       {
+  //         item_id: `${productDetail?.id}`,
+  //         item_name: `${productDetail?.name}`,
+  //         discount: `${productDetail?.discount}`,
+  //         item_brand: `${productDetail?.brand?.name}`,
+  //         item_category: `${slug}`,
+  //         item_category2: `${subSlug}`,
+  //         item_category3: `${subSubSlug}`,
+  //         item_list_id: `${RelatedProducts?.map(i => i.id)}`,
+  //         item_list_name: `${RelatedProducts?.map(i => i.name)}`,
+  //         price: `${productDetail?.unit_price}`,
+  //         quantity: 1,
+  //       },
+  //     ],
+  //   },
+  //   // dataLayerName: "ProductDetailsPageDataLayer",
+  // };
 
+  // TagManager.dataLayer(tagManagerArgs);
 
-  // Google tag manager data layer............................................
-  const tagManagerArgs = {
-    gtmId: 'GTM-N7G67VZG',
-    dataLayer: {
-      // userId: `${user?.id}`,
-      currency: "BDT",
-      value:`${productDetail?.unit_price}`,
-      items: [
-        {
-          item_id: `${productDetail?.id}`,
-          item_name: `${productDetail?.name}`,
-          discount: `${productDetail?.discount}`,
-          item_brand: `${productDetail?.brand?.name}`,
-          item_category: `${slug}`,
-          item_category2: `${subSlug}`,
-          item_category3: `${subSubSlug}`,
-          item_list_id: `${RelatedProducts?.map(i => i.id)}`,
-          item_list_name: `${RelatedProducts?.map(i => i.name)}`,
-          price: `${productDetail?.unit_price}`,
-          quantity: 1,
-        },
-      ],
-    },
-    // dataLayerName: "ProductDetailsPageDataLayer",
-  };
-
-  // console.log(tagManagerArgs);
-
-  useEffect(() => {
-    // TagManager.initialize(tagManagerArgs);
-    productDetail?.id && TagManager.dataLayer(tagManagerArgs);
-  }, [])
-
-
+  useEffect(() => {}, []);
 
   return (
     <>
