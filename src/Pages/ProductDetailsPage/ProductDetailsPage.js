@@ -76,8 +76,7 @@ const ProductDetailsPage = () => {
   useEffect(() => {
     axios.get(`${baseUrl}/products/details/${id}`).then((res) => {
       setProductDetail(res?.data?.data);
-
-      if (res.status == "success") {
+      
         // Google tag manager data layer............................................
         const tagManagerArgs = {
           gtmId: "GTM-N7G67VZG",
@@ -105,7 +104,7 @@ const ProductDetailsPage = () => {
         };
 
         TagManager.dataLayer(tagManagerArgs);
-      }
+      
     });
   }, [id]);
 
