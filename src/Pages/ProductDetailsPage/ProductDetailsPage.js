@@ -370,7 +370,7 @@ const ProductDetailsPage = () => {
 
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
-    productDetail?.id && TagManager.dataLayer(tagManagerArgs);
+    TagManager.dataLayer(tagManagerArgs);
   }, [])
 
 
