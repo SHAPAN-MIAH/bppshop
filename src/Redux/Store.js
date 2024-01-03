@@ -92,7 +92,12 @@ let initialState = {
     userOrders : localStorage.getItem("userOrders") 
     ? JSON.parse(localStorage.getItem("userOrders"))
     : []
-  }
+  },
+  RelatedProducts : {
+    RelatedProducts : localStorage.getItem("RelatedProducts") 
+    ? JSON.parse(localStorage.getItem("RelatedProducts"))
+    : []
+  },
 };
 const middleware = [thunk];
 

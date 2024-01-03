@@ -49,11 +49,11 @@ const RelatedProduct = ({ productId , setImg }) => {
     axios
       .get(`${baseUrl}/products/related-products/${productId}`)
       .then((res) => {
-        setRelatedProduct(res.data.data)
-        dispatch(relatedProducts(res.data.data))
+        setRelatedProduct(res?.data?.data)
+        dispatch(relatedProducts(res?.data?.data))
       });
         
-  }, [productId]);
+  }, [productId, dispatch]);
 
   
   return (
