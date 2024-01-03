@@ -338,12 +338,13 @@ const ProductDetailsPage = () => {
   }
 
 
-  console.log(user);
+  // console.log(user);
 
   // Google tag manager data layer............................................
   const tagManagerArgs = {
+    gtmId: 'GTM-N7G67VZG',
     dataLayer: {
-      userId: `${user.id}`,
+      userId: `${user?.id}`,
       currency: "BDT",
       value:`${productDetail?.unit_price}`,
       items: [
@@ -365,9 +366,10 @@ const ProductDetailsPage = () => {
     dataLayerName: "ProductDetailsPageDataLayer",
   };
 
-  console.log(tagManagerArgs);
+  // console.log(tagManagerArgs);
 
   useEffect(() => {
+    TagManager.initialize(tagManagerArgs);
     productDetail?.id && TagManager.dataLayer(tagManagerArgs);
   }, [])
 
