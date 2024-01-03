@@ -71,12 +71,21 @@ const ProductDetailsPage = () => {
   const { loginRes } = useSelector((state) => state.loginRes);
   const { signupRes } = useSelector((state) => state.signupRes);
   const { RelatedProducts } = useSelector((state) => state?.RelatedProducts);
+  const [relatedProduct, setRelatedProduct] = useState([]);
+
 
   // Product Details............................
   useEffect(() => {
     axios.get(`${baseUrl}/products/details/${id}`).then((res) => {
       setProductDetail(res?.data?.data);
-      
+
+
+      axios.get(`${baseUrl}/products/related-products/${res?.data?.data?.id}`)
+      .then((response) => {
+        // setRelatedProduct(response?.data?.data)
+        // dispatch(relatedProducts(res?.data?.data))
+
+
         // Google tag manager data layer............................................
         const tagManagerArgs = {
           gtmId: "GTM-N7G67VZG",
@@ -93,8 +102,8 @@ const ProductDetailsPage = () => {
                 item_category: `${slug}`,
                 item_category2: `${subSlug}`,
                 item_category3: `${subSubSlug}`,
-                item_list_id: `${RelatedProducts?.map((item) => item.id)}`,
-                item_list_name: `${RelatedProducts?.map((item) => item.name)}`,
+                item_list_id: `${response?.data?.data?.map((item) => item.id)}`,
+                item_list_name: `${response?.data?.data?.map((item) => item.name)}`,
                 price: `${res?.data?.data?.unit_price}`,
                 quantity: 1,
               },
@@ -104,6 +113,9 @@ const ProductDetailsPage = () => {
         };
 
         TagManager.dataLayer(tagManagerArgs);
+      });
+      
+        
       
     });
   }, [id]);
