@@ -340,38 +340,7 @@ const ProductDetailsPage = () => {
 
   // console.log(user);
 
-  // Google tag manager data layer............................................
-  const tagManagerArgs = {
-    gtmId: 'GTM-N7G67VZG',
-    dataLayer: {
-      userId: `${user?.id}`,
-      currency: "BDT",
-      value:`${productDetail?.unit_price}`,
-      items: [
-        {
-          item_id: `${productDetail?.id}`,
-          item_name: `${productDetail?.name}`,
-          discount: `${productDetail?.discount}`,
-          item_brand: `${productDetail?.brand?.name}`,
-          item_category: `${slug}`,
-          item_category2: `${subSlug}`,
-          item_category3: `${subSubSlug}`,
-          item_list_id: `${RelatedProducts?.map(i => i.id)}`,
-          item_list_name: `${RelatedProducts?.map(i => i.name)}`,
-          price: `${productDetail?.unit_price}`,
-          quantity: 1,
-        },
-      ],
-    },
-    dataLayerName: "ProductDetailsPageDataLayer",
-  };
-
-  // console.log(tagManagerArgs);
-
-  useEffect(() => {
-    TagManager.initialize(tagManagerArgs);
-    TagManager.dataLayer(tagManagerArgs);
-  }, [])
+  
 
 
 
@@ -539,6 +508,40 @@ const ProductDetailsPage = () => {
   };
   
 
+
+
+  // Google tag manager data layer............................................
+  const tagManagerArgs = {
+    gtmId: 'GTM-N7G67VZG',
+    dataLayer: {
+      // userId: `${user?.id}`,
+      currency: "BDT",
+      // value:`${productDetail?.unit_price}`,
+      items: [
+        {
+          // item_id: `${productDetail?.id}`,
+          // item_name: `${productDetail?.name}`,
+          // discount: `${productDetail?.discount}`,
+          // item_brand: `${productDetail?.brand?.name}`,
+          item_category: `${slug}`,
+          item_category2: `${subSlug}`,
+          item_category3: `${subSubSlug}`,
+          // item_list_id: `${RelatedProducts?.map(i => i.id)}`,
+          // item_list_name: `${RelatedProducts?.map(i => i.name)}`,
+          // price: `${productDetail?.unit_price}`,
+          quantity: 1,
+        },
+      ],
+    },
+    dataLayerName: "ProductDetailsPageDataLayer",
+  };
+
+  // console.log(tagManagerArgs);
+
+  useEffect(() => {
+    // TagManager.initialize(tagManagerArgs);
+    TagManager.dataLayer(tagManagerArgs);
+  }, [])
 
 
 
