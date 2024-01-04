@@ -31,6 +31,7 @@ import SignUpModal from "../User/SignUp/SignUpModal";
 import ModalVideo from "react-modal-video";
 import "react-modal-video/scss/modal-video.scss";
 import RelatedProduct from "../../Components/RelatedProduct/RelatedProduct";
+import TagManager from "react-gtm-module";
 
 Modal.setAppElement("#root");
 
@@ -64,6 +65,7 @@ const NewArrivalProductDetails = () => {
   const token = localStorage.getItem("token");
   const sellerId = localStorage.getItem("sellerId");
   const { isAuthenticated } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.user);
   const { loginRes } = useSelector((state) => state.loginRes);
   const { signupRes } = useSelector((state) => state.signupRes);
 
@@ -71,6 +73,37 @@ const NewArrivalProductDetails = () => {
   useEffect(() => {
     axios.get(`${baseUrl}/products/details/${id}`).then((res) => {
       setProductDetail(res?.data?.data);
+
+      axios.get(`${baseUrl}/products/related-products/${res?.data?.data?.id}`)
+      .then((response) => {
+        
+        // Google tag manager data layer............................................
+        const tagManagerArgs = {
+          gtmId: "GTM-N7G67VZG",
+          dataLayer: {
+            userId: `${user?.id}`,
+            currency: "BDT",
+            value: `${res?.data?.data?.unit_price}`,
+            items: [
+              {
+                item_id: `${res?.data?.data?.id}`,
+                item_name: `${res?.data?.data?.name}`,
+                discount: `${res?.data?.data?.discount}`,
+                item_brand: `${res?.data?.data?.brand?.name}`,
+                // item_category: `${slug}`,
+                // item_category2: `${subSlug}`,
+                item_category3: `${subSubSlug}`,
+                item_list_id: `${response?.data?.data?.map((item) => item.id)}`,
+                item_list_name: `${response?.data?.data?.map((item) => item.name)}`,
+                price: `${res?.data?.data?.unit_price}`,
+                quantity: 1,
+              },
+            ],
+          }
+        };
+
+        TagManager.dataLayer(tagManagerArgs);
+      });
     });
   }, [id]);
 
