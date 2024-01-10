@@ -54,7 +54,8 @@ const BrandsProductsCard = ({ product, setImg }) => {
     setIsOpen(false);
   }
   const token = localStorage.getItem("token");
-  const { brandName, brandId } = useParams();
+  const {  brandId } = useParams();
+  const brandName = localStorage.getItem("brandName");
 
   const {
     id,

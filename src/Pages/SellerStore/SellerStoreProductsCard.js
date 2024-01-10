@@ -59,7 +59,8 @@ const SellerStoreProductsCard = ({ product, setImg }) => {
     setIsOpen(false);
   }
 
-  const { sellersStoreName, sellerId} = useParams();
+  const { sellerId} = useParams();
+  const sellerName = localStorage.getItem("sellerName");
   const token = localStorage.getItem("token");
   const modalLogin = localStorage.getItem("modalLogin");
   const location = useLocation();
@@ -211,7 +212,7 @@ const SellerStoreProductsCard = ({ product, setImg }) => {
                 item_id: `${id}`,
                 item_name: `${name}`,
                 discount: `${discount}`,
-                seller_name: `${sellersStoreName}`,
+                seller_name: `${sellerName}`,
                 // item_brand: `${res?.data?.data?.brand?.name}`,
                 // item_category: `${slug}`,
                 // item_category2: `${subSlug}`,
