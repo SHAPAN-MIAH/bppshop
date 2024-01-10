@@ -194,9 +194,9 @@ const AllProductsCard = ({ product, setImg }) => {
 
           // Google tag manager data layer............................................
         const tagManagerArgs = {
-          event: "add_to_cart",
           gtmId: "GTM-N7G67VZG",
           dataLayer: {
+            event: "add_to_cart",
             userId: `${user?.id}`,
             currency: "BDT",
             value: `${unit_price}`,
