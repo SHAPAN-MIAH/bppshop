@@ -12,6 +12,7 @@ import { RatingStar } from "rating-star";
 import LoginModal from "../User/Login/LoginModal";
 import SignUpModal from "../User/SignUp/SignUpModal";
 import Modal from "react-modal";
+import TagManager from "react-gtm-module";
 
 Modal.setAppElement("#root");
 
@@ -80,6 +81,7 @@ const BrandsProductsCard = ({ product, setImg }) => {
   const addeditemid = cartItemsId?.find((i) => i == id);
 
   const { isAuthenticated } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.user);
   const { loginRes } = useSelector((state) => state.loginRes);
   const { signupRes } = useSelector((state) => state.signupRes);
   const modalLogin = localStorage.getItem("modalLogin");
@@ -184,6 +186,35 @@ const BrandsProductsCard = ({ product, setImg }) => {
         product?.colors?.length > 0
           ? dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithColor))
           : dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithoutColor));
+
+          // Google tag manager data layer............................................
+        const tagManagerArgs = {
+          gtmId: "GTM-N7G67VZG",
+          dataLayer: {
+            event: "add_to_cart",
+            userId: `${user?.id}`,
+            currency: "BDT",
+            value: `${unit_price}`,
+            items: [
+              {
+                item_id: `${id}`,
+                item_name: `${name}`,
+                discount: `${discount}`,
+                brand_name: `${brandName}`,
+                // item_brand: `${res?.data?.data?.brand?.name}`,
+                // item_category: `${slug}`,
+                // item_category2: `${subSlug}`,
+                // item_category3: `${subSubSlug}`,
+                // item_list_id: `${response?.data?.data?.map((item) => item.id)}`,
+                // item_list_name: `${response?.data?.data?.map((item) => item.name)}`,
+                price: `${unit_price}`,
+                quantity: 1,
+              },
+            ],
+          }
+        };
+
+        TagManager.dataLayer(tagManagerArgs);
       }
 
 
