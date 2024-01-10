@@ -204,6 +204,8 @@ const ProductCard = ({ product, setImg, allCategoryProductCard, allSubCategoryPr
   const imgReset = () => {
     setImg("")
   }
+
+  
   return (
     <>
       <div className="product_card_content" onClick={imgReset}>

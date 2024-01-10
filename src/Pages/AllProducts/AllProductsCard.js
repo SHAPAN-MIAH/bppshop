@@ -13,6 +13,7 @@ import { RatingStar } from "rating-star";
 import Modal from "react-modal";
 import LoginModal from "../User/Login/LoginModal";
 import SignUpModal from "../User/SignUp/SignUpModal";
+import TagManager from "react-gtm-module";
 
 Modal.setAppElement("#root");
 
@@ -57,6 +58,7 @@ const AllProductsCard = ({ product, setImg }) => {
 
   const { slug, subSlug, subSubSlug } = useParams();
   const token = localStorage.getItem("token");
+  const user = useSelector((state) => state.user.user);
   const modalLogin = localStorage.getItem("modalLogin");
   const location = useLocation();
 
@@ -188,6 +190,34 @@ const AllProductsCard = ({ product, setImg }) => {
         product?.colors?.length > 0
           ? dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithColor))
           : dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithoutColor));
+
+
+          // Google tag manager data layer............................................
+        const tagManagerArgs = {
+          gtmId: "GTM-N7G67VZG",
+          dataLayer: {
+            userId: `${user?.id}`,
+            currency: "BDT",
+            value: `${unit_price}`,
+            items: [
+              {
+                item_id: `${id}`,
+                item_name: `${name}`,
+                discount: `${discount}`,
+                // item_brand: `${res?.data?.data?.brand?.name}`,
+                item_category: `${slug}`,
+                item_category2: `${subSlug}`,
+                item_category3: `${subSubSlug}`,
+                // item_list_id: `${response?.data?.data?.map((item) => item.id)}`,
+                // item_list_name: `${response?.data?.data?.map((item) => item.name)}`,
+                price: `${unit_price}`,
+                quantity: 1,
+              },
+            ],
+          }
+        };
+
+        TagManager.dataLayer(tagManagerArgs);
       }
 
       addToCartOverlyLoading()
