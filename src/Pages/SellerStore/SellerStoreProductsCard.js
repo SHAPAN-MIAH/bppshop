@@ -212,7 +212,7 @@ const SellerStoreProductsCard = ({ product, setImg }) => {
                 item_id: `${id}`,
                 item_name: `${name}`,
                 discount: `${discount}`,
-                seller_name: `${sellerName}`,
+                seller_name: `${sellerName? sellerName : ""}`,
                 // item_brand: `${res?.data?.data?.brand?.name}`,
                 // item_category: `${slug}`,
                 // item_category2: `${subSlug}`,

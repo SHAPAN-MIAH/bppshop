@@ -72,6 +72,8 @@ const ProductDetailsPage = () => {
   const { signupRes } = useSelector((state) => state.signupRes);
   const { RelatedProducts } = useSelector((state) => state?.RelatedProducts);
 
+  // console.log(RelatedProducts);
+
 
   // Product Details............................
   useEffect(() => {
@@ -111,6 +113,34 @@ const ProductDetailsPage = () => {
       
     });
   }, [id]);
+
+
+
+  // Google tag manager data layer.
+  const tagManagerArgs = {
+    gtmId: "GTM-N7G67VZG",
+    dataLayer: {
+      event: "add_to_cart",
+      userId: `${user?.id}`,
+      currency: "BDT",
+      value: `${productDetail?.unit_price}`,
+      items: [
+        {
+          item_id: `${productDetail?.id}`,
+          item_name: `${productDetail?.name}`,
+          discount: `${productDetail?.discount}`,
+          item_brand: `${productDetail?.brand?.name}`,
+          item_category: `${slug}`,
+          item_category2: `${subSlug}`,
+          item_category3: `${subSubSlug}`,
+          item_list_id: `${RelatedProducts?.map((item) => item.id)}`,
+          item_list_name: `${RelatedProducts?.map((item) => item.name)}`,
+          price: `${productDetail?.unit_price}`,
+          quantity: 1,
+        },
+      ],
+    }
+  };
 
   // Customer Audit log.........................
   // const auditLog = {
@@ -418,7 +448,8 @@ const ProductDetailsPage = () => {
         ? dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithColor))
         : dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithoutColor));
       addToCartOverlyLoading();
-      // productDetail?.id && TagManager.dataLayer(tagManagerArgs);
+
+     TagManager.dataLayer(tagManagerArgs);
     }
   };
 
@@ -461,7 +492,7 @@ const ProductDetailsPage = () => {
           : dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithoutColor));
 
         addToCartOverlyLoading();
-        // productDetail?.id && TagManager.dataLayer(tagManagerArgs);
+        TagManager.dataLayer(tagManagerArgs);
       }
 
       dispatch(ClearAddToCartRes());

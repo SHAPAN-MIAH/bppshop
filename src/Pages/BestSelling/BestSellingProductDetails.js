@@ -61,6 +61,8 @@ const BestSellingProductDetails = () => {
   const user = useSelector((state) => state.user.user);
   const { loginRes } = useSelector((state) => state.loginRes);
   const { signupRes } = useSelector((state) => state.signupRes);
+  const { RelatedProducts } = useSelector((state) => state?.RelatedProducts);
+
 
   // Product Details............................
   useEffect(() => {
@@ -100,6 +102,33 @@ const BestSellingProductDetails = () => {
       });
     });
   }, [id]);
+
+
+   // Google tag manager data layer.
+   const tagManagerArgs = {
+    gtmId: "GTM-N7G67VZG",
+    dataLayer: {
+      event: "add_to_cart",
+      userId: `${user?.id}`,
+      currency: "BDT",
+      value: `${productDetail?.unit_price}`,
+      items: [
+        {
+          item_id: `${productDetail?.id}`,
+          item_name: `${productDetail?.name}`,
+          discount: `${productDetail?.discount}`,
+          item_brand: `${productDetail?.brand?.name}`,
+          // item_category: `${slug}`,
+          // item_category2: `${subSlug}`,
+          item_category3: `${subSubSlug}`,
+          item_list_id: `${RelatedProducts?.map((item) => item.id)}`,
+          item_list_name: `${RelatedProducts?.map((item) => item.name)}`,
+          price: `${productDetail?.unit_price}`,
+          quantity: 1,
+        },
+      ],
+    }
+  };
 
   // Customer Audit log.........................
   // const auditLog = {
@@ -399,6 +428,7 @@ const increaseQuantity = (id, quantity, stock, maxOrderQty) => {
         ? dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithColor))
         : dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithoutColor));
       addToCartOverlyLoading();
+      TagManager.dataLayer(tagManagerArgs);
     }
   };
 
@@ -440,6 +470,7 @@ const increaseQuantity = (id, quantity, stock, maxOrderQty) => {
           : dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithoutColor));
 
         addToCartOverlyLoading();
+        TagManager.dataLayer(tagManagerArgs);
       }
 
       dispatch(ClearAddToCartRes());

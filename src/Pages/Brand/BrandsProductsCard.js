@@ -201,7 +201,7 @@ const BrandsProductsCard = ({ product, setImg }) => {
                 item_id: `${id}`,
                 item_name: `${name}`,
                 discount: `${discount}`,
-                brand_name: `${brandName}`,
+                brand_name: `${brandName? brandName : ""}`,
                 // item_brand: `${res?.data?.data?.brand?.name}`,
                 // item_category: `${slug}`,
                 // item_category2: `${subSlug}`,
