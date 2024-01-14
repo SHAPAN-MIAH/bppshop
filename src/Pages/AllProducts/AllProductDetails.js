@@ -29,7 +29,6 @@ import "react-modal-video/scss/modal-video.scss";
 import RelatedProduct from "../../Components/RelatedProduct/RelatedProduct";
 import TagManager from "react-gtm-module";
 
-
 Modal.setAppElement("#root");
 
 const customStyles = {
@@ -49,6 +48,7 @@ const customStyles = {
 const AllProductDetails = () => {
   const { subSubSlug, id } = useParams();
   const [productDetail, setProductDetail] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [quantityCount, setQuantityCount] = useState(1);
   const [variantRes, setVariantRes] = useState({});
   const dispatch = useDispatch();
@@ -61,47 +61,52 @@ const AllProductDetails = () => {
   const user = useSelector((state) => state.user.user);
   const { loginRes } = useSelector((state) => state.loginRes);
   const { signupRes } = useSelector((state) => state.signupRes);
-  const { RelatedProducts } = useSelector((state) => state?.RelatedProducts);
-  
+  // const { RelatedProducts } = useSelector((state) => state?.RelatedProducts);
+
+  // console.log(relatedProducts);
+
   // Product Details............................
   useEffect(() => {
     axios.get(`${baseUrl}/products/details/${id}`).then((res) => {
-      setProductDetail(res.data.data);
+      setProductDetail(res?.data?.data);
 
+      axios
+        .get(`${baseUrl}/products/related-products/${res?.data?.data?.id}`)
+        .then((response) => {
+          setRelatedProducts(response?.data?.data);
+          // Google tag manager data layer............................................
+          const tagManagerArgs = {
+            gtmId: "GTM-N7G67VZG",
+            dataLayer: {
+              userId: `${user?.id}`,
+              currency: "BDT",
+              value: `${res?.data?.data?.unit_price}`,
+              items: [
+                {
+                  item_id: `${res?.data?.data?.id}`,
+                  item_name: `${res?.data?.data?.name}`,
+                  discount: `${res?.data?.data?.discount}`,
+                  item_brand: `${res?.data?.data?.brand?.name}`,
+                  // item_category: `${slug}`,
+                  // item_category2: `${subSlug}`,
+                  item_category3: `${subSubSlug}`,
+                  item_list_id: `${response?.data?.data?.map(
+                    (item) => item.id
+                  )}`,
+                  item_list_name: `${response?.data?.data?.map(
+                    (item) => item.name
+                  )}`,
+                  price: `${res?.data?.data?.unit_price}`,
+                  quantity: 1,
+                },
+              ],
+            },
+          };
 
-      axios.get(`${baseUrl}/products/related-products/${res?.data?.data?.id}`)
-      .then((response) => {
-        
-        // Google tag manager data layer............................................
-        const tagManagerArgs = {
-          gtmId: "GTM-N7G67VZG",
-          dataLayer: {
-            userId: `${user?.id}`,
-            currency: "BDT",
-            value: `${res?.data?.data?.unit_price}`,
-            items: [
-              {
-                item_id: `${res?.data?.data?.id}`,
-                item_name: `${res?.data?.data?.name}`,
-                discount: `${res?.data?.data?.discount}`,
-                item_brand: `${res?.data?.data?.brand?.name}`,
-                // item_category: `${slug}`,
-                // item_category2: `${subSlug}`,
-                item_category3: `${subSubSlug}`,
-                item_list_id: `${response?.data?.data?.map((item) => item.id)}`,
-                item_list_name: `${response?.data?.data?.map((item) => item.name)}`,
-                price: `${res?.data?.data?.unit_price}`,
-                quantity: 1,
-              },
-            ],
-          }
-        };
-
-        TagManager.dataLayer(tagManagerArgs);
-      });
+          TagManager.dataLayer(tagManagerArgs);
+        });
     });
   }, [id]);
-
 
   // Google tag manager data layer.
   const tagManagerArgs = {
@@ -120,13 +125,13 @@ const AllProductDetails = () => {
           // item_category: `${slug}`,
           // item_category2: `${subSlug}`,
           item_category3: `${subSubSlug}`,
-          item_list_id: `${RelatedProducts?.map((item) => item.id)}`,
-          item_list_name: `${RelatedProducts?.map((item) => item.name)}`,
+          item_list_id: `${relatedProducts?.map((item) => item?.id)}`,
+          item_list_name: `${relatedProducts?.map((item) => item?.name)}`,
           price: `${productDetail?.unit_price}`,
           quantity: 1,
         },
       ],
-    }
+    },
   };
 
   // Customer Audit log.........................
@@ -138,7 +143,6 @@ const AllProductDetails = () => {
   // useEffect(() => {
   //   token && axios.post(`${baseUrl}/customer/audit-log`, auditLog, config);
   // }, []);
-
 
   let productDetailId = parseInt(productDetail?.id);
   const cartItemsId = cartItems?.map((i) => i?.product_id);
@@ -314,7 +318,7 @@ const AllProductDetails = () => {
           color: "#fff",
         },
       });
-      return ;
+      return;
     }
     if (maxOrderQty > 1 && maxOrderQty <= quantity) {
       toast.error("Sorry! Stock limited!", {
@@ -327,7 +331,7 @@ const AllProductDetails = () => {
           color: "#fff",
         },
       });
-      return ;
+      return;
     }
   };
 
@@ -357,7 +361,7 @@ const AllProductDetails = () => {
           color: "#fff",
         },
       });
-      return ;
+      return;
     }
     // dispatch(addItemsToCart(id, newQty, defaultChoices));
     dispatch(updateItemsToCart(id, newQty));
@@ -469,16 +473,15 @@ const AllProductDetails = () => {
           ? dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithColor))
           : dispatch(addItemsToCartAfterLogin(addItemsToCartDataWithoutColor));
 
-          TagManager.dataLayer(tagManagerArgs);
+        TagManager.dataLayer(tagManagerArgs);
         addToCartOverlyLoading();
-
       }
-   
+
       dispatch(ClearAddToCartRes());
     }
   };
 
-  const addToCartOverlyLoading = () => { 
+  const addToCartOverlyLoading = () => {
     const addToCartLoaderOverlay = document.querySelector(
       ".addToCart_loader_overlay"
     );
@@ -515,7 +518,6 @@ const AllProductDetails = () => {
 
   const [isOpen, setOpen] = useState(false);
 
-
   // youtube video embed code split function............
   let embed_video_url;
 
@@ -543,9 +545,8 @@ const AllProductDetails = () => {
   const pageMount = () => {
     setQuantityCount(1);
     setVariantRes("");
-    setImg("")
+    setImg("");
   };
-
 
   return (
     <>
@@ -793,12 +794,15 @@ const AllProductDetails = () => {
                       <span
                         onClick={() => {
                           setQuantityCount(
-                            productDetail?.max_order_qty ? (productDetail?.max_order_qty >= quantityCount + 1
+                            productDetail?.max_order_qty
+                              ? productDetail?.max_order_qty >=
+                                quantityCount + 1
+                                ? quantityCount + 1
+                                : quantityCount
+                              : productDetail?.current_stock >=
+                                quantityCount + 1
                               ? quantityCount + 1
-                              : quantityCount ) :
-                              ( productDetail?.current_stock >= quantityCount + 1
-                              ? quantityCount + 1
-                              : quantityCount)
+                              : quantityCount
                           );
                           priceVariantHandlerByChoiceOption(
                             productDetail?.current_stock >= quantityCount + 1
@@ -956,7 +960,7 @@ const AllProductDetails = () => {
       </div>
       {/* )} */}
       <ProductReview productDetail={productDetail} />
-      <RelatedProduct productId={productDetail.id} setImg={setImg}/>
+      {productDetail?.id && <RelatedProduct productId={productDetail?.id} setImg={setImg} />}
 
       <Modal
         isOpen={modalIsOpen}

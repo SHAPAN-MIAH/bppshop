@@ -10,6 +10,7 @@ import { imgThumbnailBaseUrl } from "../../../BaseUrl/BaseUrl";
 import toast from "react-hot-toast";
 import { SignupRedirectAction } from "../../../Redux/Actions/SignUpRedirectAction";
 import { useEffect } from "react";
+import TagManager from "react-gtm-module";
 
 const CartDetailsView = () => {
   const [quantityCount, setQuantityCount] = useState(1);
@@ -70,9 +71,8 @@ const CartDetailsView = () => {
 
   //cart item remove functionality
   const handleRemoveItemFormCart = (id) => {
-    dispatch(removeItemsFromCart(id));    
+    dispatch(removeItemsFromCart(id));
   };
-
 
   useEffect(() => {
     if (itemRemoveRes[0]?.status == "success") {
@@ -88,7 +88,7 @@ const CartDetailsView = () => {
         },
       });
     }
-  }, [itemRemoveRes])
+  }, [itemRemoveRes]);
 
   const CartDetailsCloseHandler = () => {
     const cartDetailsViewContainer = document.querySelector(
@@ -121,15 +121,44 @@ const CartDetailsView = () => {
     document.documentElement.scrollTop = 0;
 
     dispatch(SignupRedirectAction(true));
+
+    // Google tag manager data layer............................................
+    const tagManagerArgs = {
+      gtmId: "GTM-N7G67VZG",
+      dataLayer: {
+        event: "begin_checkout",
+        currency: "BDT",
+        value: `${cartItems?.[0]?.data?.reduce((acc, item) => acc + item?.quantity * (item?.price - item?.discount) * quantityCount, 0)}`,
+        items: [],
+      },
+    };
+
+    TagManager.dataLayer(tagManagerArgs);
+
+
+    cartItems[0].data.forEach((element) => {
+      let item = {}
+      
+      item.item_id = `${element.id}`;
+      item.item_name = `${element.name}`;
+      item.discount = `${element.discount}`;
+      item.item_brand = `${element?.brand?.name}`;
+      item.price = `${element.price}`;
+      item.quantity = 1
+      
+      tagManagerArgs.dataLayer.items.push(item);
+    })
+
+    // console.log(tagManagerArgs);
   };
+
+  
 
   const CartEmptyAlert = () => {
     document.querySelector(".cartEmptyAlert").innerHTML =
       "Please add product in cart first.";
     document.querySelector(".cartEmptyAlert").style.color = "red";
   };
-
- 
 
   return (
     <>
