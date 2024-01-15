@@ -140,16 +140,17 @@ const CartDetailsView = () => {
       item.item_id = `${element.id}`;
       item.item_name = `${element.name}`;
       item.discount = `${element.discount}`;
-      item.item_brand = `${element?.brand?.name}`;
       item.price = `${element.price}`;
-      item.quantity = 1
+      item.quantity = `${element.quantity}`
+      item.customer_id = `${element.customer_id}`
+      item.variations = `${element.variations}`
+      item.shop_info = `${element.shop_info}`
       
       tagManagerArgs.dataLayer.items.push(item);
     })
 
 
     TagManager.dataLayer(tagManagerArgs);
-    console.log(tagManagerArgs);
   };
 
   
