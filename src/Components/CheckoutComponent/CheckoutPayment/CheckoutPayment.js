@@ -90,7 +90,7 @@ const CheckoutPayment = () => {
       dataLayer: {
         event: "purchase",
         currency: "BDT",
-        value: `${cartItems?.[0]?.data?.reduce((acc, item) => acc + item?.quantity * (item?.price - item?.discount))}`,
+        value: `${cartItems?.[0]?.data?.reduce((acc, item) => acc + item?.quantity * (item?.price - item?.discount , 0))}`,
         delivery_charge : `${deliveryCost}`,
         items: [],
       },
