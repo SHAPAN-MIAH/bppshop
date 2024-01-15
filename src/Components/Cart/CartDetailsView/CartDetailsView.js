@@ -143,7 +143,7 @@ const CartDetailsView = () => {
       item.price = `${element.price}`;
       item.quantity = `${element.quantity}`
       item.customer_id = `${element.customer_id}`
-      item.variations = `${element.variations}`
+      item.variations = `${element.variant}`
       item.shop_info = `${element.shop_info}`
       
       tagManagerArgs.dataLayer.items.push(item);
