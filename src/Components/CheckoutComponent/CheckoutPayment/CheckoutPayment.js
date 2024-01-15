@@ -17,14 +17,23 @@ import OptionImg2 from "../../../Assets/Images/bankLogo/Nagad-Logo.wine.png";
 import OptionImg3 from "../../../Assets/Images/bankLogo/rocket (1).png";
 import OptionImg22 from "../../../Assets/Images/bankLogo/download (1).png";
 import proccedordergif from "../../../Assets/Images/udorderloader.gif";
+import TagManager from "react-gtm-module";
 
 const CheckoutPayment = () => {
   const { shippingAddressInfo } = useSelector((state) => state?.shippingInfo);
+  const cartItems = useSelector((state) => {
+    return state.cart.cartItems;
+  });
+  const { deliveryCharge } = useSelector((state) => state?.deliveryCharge);
+  const deliveryCost = parseInt(deliveryCharge?.delivery_charge);
+
   const token = localStorage.getItem("token");
   const agentId = localStorage.getItem("agentId");
   const config = { headers: { Authorization: `Bearer ${token}` } };
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [quantityCount, setQuantityCount] = useState(1);
+
 
   const handleCheckoutConfirm = (id) => {
     const proccedordergifContainer = document.querySelector(
@@ -73,6 +82,38 @@ const CheckoutPayment = () => {
           }
         });
     }
+
+
+     // Google tag manager data layer............................................
+     const tagManagerArgs = {
+      gtmId: "GTM-N7G67VZG",
+      dataLayer: {
+        event: "purchase",
+        currency: "BDT",
+        value: `${cartItems?.[0]?.data?.reduce((acc, item) => acc + item?.quantity * (item?.price - item?.discount))}`,
+        delivery_charge : `${deliveryCost}`,
+        items: [],
+      },
+    };
+
+
+    cartItems[0].data.forEach((element) => {
+      let item = {}
+      
+      item.item_id = `${element.id}`;
+      item.item_name = `${element.name}`;
+      item.discount = `${element.discount}`;
+      item.price = `${element.price}`;
+      item.quantity = `${element.quantity}`
+      item.customer_id = `${element.customer_id}`
+      item.variations = `${element.variant}`
+      item.shop_info = `${element.shop_info}`
+      
+      tagManagerArgs.dataLayer.items.push(item);
+    })
+
+
+    TagManager.dataLayer(tagManagerArgs);
   };
 
   // {
