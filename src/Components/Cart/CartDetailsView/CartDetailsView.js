@@ -133,8 +133,6 @@ const CartDetailsView = () => {
       },
     };
 
-    TagManager.dataLayer(tagManagerArgs);
-
 
     cartItems[0].data.forEach((element) => {
       let item = {}
@@ -149,7 +147,8 @@ const CartDetailsView = () => {
       tagManagerArgs.dataLayer.items.push(item);
     })
 
-    // console.log(tagManagerArgs);
+
+    TagManager.dataLayer(tagManagerArgs);
   };
 
   

@@ -70,7 +70,9 @@ const ProductDetailsPage = () => {
   const user = useSelector((state) => state.user.user);
   const { loginRes } = useSelector((state) => state.loginRes);
   const { signupRes } = useSelector((state) => state.signupRes);
-  const { RelatedProducts } = useSelector((state) => state?.RelatedProducts);
+  // const { RelatedProducts } = useSelector((state) => state?.RelatedProducts);
+
+  const [relatedProducts, setRelatedProducts] = useState([])
 
   // console.log(RelatedProducts);
 
@@ -82,6 +84,7 @@ const ProductDetailsPage = () => {
 
       axios.get(`${baseUrl}/products/related-products/${res?.data?.data?.id}`)
       .then((response) => {
+        setRelatedProducts(response?.data?.data)
         
         // Google tag manager data layer............................................
         const tagManagerArgs = {
@@ -133,8 +136,8 @@ const ProductDetailsPage = () => {
           item_category: `${slug}`,
           item_category2: `${subSlug}`,
           item_category3: `${subSubSlug}`,
-          item_list_id: `${RelatedProducts?.map((item) => item.id)}`,
-          item_list_name: `${RelatedProducts?.map((item) => item.name)}`,
+          item_list_id: `${relatedProducts?.map((item) => item.id)}`,
+          item_list_name: `${relatedProducts?.map((item) => item.name)}`,
           price: `${productDetail?.unit_price}`,
           quantity: 1,
         },
