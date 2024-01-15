@@ -149,6 +149,7 @@ const CartDetailsView = () => {
 
 
     TagManager.dataLayer(tagManagerArgs);
+    console.log(tagManagerArgs);
   };
 
   
