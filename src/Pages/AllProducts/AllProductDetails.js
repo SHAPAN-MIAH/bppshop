@@ -128,7 +128,7 @@ const AllProductDetails = () => {
           item_list_id: `${relatedProducts?.map((item) => item?.id)}`,
           item_list_name: `${relatedProducts?.map((item) => item?.name)}`,
           price: `${productDetail?.unit_price}`,
-          quantity: 1,
+          quantity: `${quantityCount}`
         },
       ],
     },

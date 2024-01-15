@@ -105,7 +105,7 @@ const ProductDetailsPage = () => {
                 item_list_id: `${response?.data?.data?.map((item) => item.id)}`,
                 item_list_name: `${response?.data?.data?.map((item) => item.name)}`,
                 price: `${res?.data?.data?.unit_price}`,
-                quantity: 1,
+                quantity: `${quantityCount}`
               },
             ],
           }

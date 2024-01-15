@@ -132,7 +132,7 @@ const TopRatedProductDetails = () => {
           item_list_id: `${RelatedProducts?.map((item) => item.id)}`,
           item_list_name: `${RelatedProducts?.map((item) => item.name)}`,
           price: `${productDetail?.unit_price}`,
-          quantity: 1,
+          quantity: `${quantityCount}`
         },
       ],
     }
